@@ -1,11 +1,7 @@
 use framework "Foundation"
 use framework "AppKit"
-use framework "AVFoundation"
-use framework "AVKit"
-use framework "CoreAudio"
 use scripting additions
 -- load framework
-
 -- property parent : class "NSObject"
 
 property StatusItem : missing value
@@ -131,36 +127,6 @@ on launchMyStandAlone()
 	end tell
 end launchMyStandAlone
 
-on doPlayMIDI(pMIDIFilePath)
-	if pMIDIFilePath is empty then
-		set tMIDIpath to (current application's NSBundle's mainBundle()'s bundlePath()'s stringByAppendingPathComponent:"Contents/Resources/test.mid") as text
-		set tPOSIXMIDIpath to POSIX path of tMIDIpath as string
-		set mMIDIFileNSURL to (current application's NSURL's fileURLWithPath:tPOSIXMIDIpath)
-	else
-		set mMIDIFileNSURL to (current application's NSURL's fileURLWithPath:pMIDIFilePath)
-	end if
-	
-	set {myMIDIPlayer, theError} to (current application's AVMIDIPlayer's alloc()'s initWithContentsOfURL:mMIDIFileNSURL soundBankURL:0 |error|:(reference))
-	myMIDIPlayer's prepareToPlay()
-	myMIDIPlayer's play()
-	
-	-- set tSoundFontURL to "file:///HyperSoundGM.sf2" as URL
-	-- initWithTitle:this_item action:("doMenu" & (i as text) & ":") keyEquivalent:"q")
-	-- tell class "AVMIDIPlayer" of current application
-	--  set thePlayer to current application's AVMIDIPlayer's alloc()'s initWithContentsOfURL:this_url(tMIDIURL)
-	-- thePlayer's soundBankURL:tSoundFontURL
-	--	thePlayer's prepareToPlay()
-	--	thePlayer's play()
-	-- end tell
-end doPlayMIDI
-
-on playMIDI()
-	set midiURL to "file://test.mid"
-	set tMidiURL to current application's class "NSURL"'s URLWithString:midiURL
-	set myMIDIPlayer to current application's AVMIDIPlayer's alloc()'s initWithContentsOfURL:tMidiURL soundBankURL:none |error|:(reference)
-	myMIDIPlayer's play()
-end playMIDI
-
 on playASound(soundName)
 	if soundName is "" then set soundName to "Glass"
 	set soundFilePath to "/System/Library/Sounds/" & soundName & ".aiff"
@@ -171,11 +137,6 @@ on playASound(soundName)
 	soundInstance's setVolume:1.0
 	soundInstance's play()
 end playASound
-
-set midiURL to "file://test.mid"
-set midiURL to current application's class "NSURL"'s URLWithString:midiURL
-set myMIDIPlayer to current application's AVMIDIPlayer's alloc()'s initWithContentsOfURL:midiURL soundBankURL:"" |error|:(reference)
-myMIDIPlayer's play()
 
 StatusItem's setTitle:""
 StatusItem's setImage:(current application's NSImage's imageNamed:"menuicon.png")
